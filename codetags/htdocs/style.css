@@ -1,0 +1,62 @@
+div.codetags div.wrapper {
+    padding: 1em;
+}
+
+div.codetags table.matches {
+    border-collapse: collapse;
+    border: 2px solid #ccc;
+    margin-top: 1em;
+    width: 100%;
+}
+
+div.codetags table.matches td {
+    padding: 0.3em;
+    border: 1px dotted #bbb;
+}
+
+div.codetags table.matches tr.caption {
+    background-color: #ccc;
+}
+
+div.codetags table.matches tr.caption th {
+    padding: 0.4em;
+    text-align: left;
+    font-weight: bold;
+}
+
+div.codetags table.matches tr.header {
+    background-color: #eee;
+}
+
+div.codetags table.matches tr.header th {
+    padding: 0.3em;
+    text-align: left;
+}
+
+div.codetags table.matches .filename {
+    width: 15em;
+}
+div.codetags table.matches .lineno,
+div.codetags table.matches .tag {
+    width: 3.5em;
+    text-align: center;
+}
+
+div.codetags table.matches td.tag {
+    font-weight: bold;
+}
+
+div.codetags table.matches tr.tag-xxx td.tag {
+    background-color: #f2f2f2;
+    color: #444;
+}
+
+div.codetags table.matches tr.tag-todo td.tag {
+    background-color: #ffb;
+    color: #880;
+}
+
+div.codetags table.matches tr.tag-fixme td.tag {
+    background-color: #fdc;
+    color: #d40;
+}
