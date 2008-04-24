@@ -27,7 +27,7 @@ class TagIndexer(object):
         
         p = []
         for word in self.tags:
-            p.append(re.escape(word))
+            p.append(r'\b' + re.escape(word) + r'\b')
         self.tag_re = re.compile(r'(%s)\:?\s*(.*?)\s*$' % '|'.join(p))
 
         cdir = os.path.join(os.path.abspath(env.path), 'cache', 'codetags')
