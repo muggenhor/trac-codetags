@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from trac.core import *
+from trac.env import IEnvironmentSetupParticipant
 from trac.perm import IPermissionRequestor
 from trac.web.chrome import INavigationContributor, ITemplateProvider, \
                             add_stylesheet
@@ -10,8 +11,29 @@ from codetags.indexer import TagIndexer
 
 
 class CodetagsPlugin(Component):
-    implements(INavigationContributor, ITemplateProvider, IRequestHandler, \
-               IPermissionRequestor)
+    implements(IEnvironmentSetupParticipant, INavigationContributor, \
+               ITemplateProvider, IRequestHandler, IPermissionRequestor)
+
+    # IEnvironmentSetupParticipant methods
+    def environment_created(self):
+        self.cache_exists = False
+        self.upgrade_environment(self.env.get_db_cnx())
+
+    def environment_needs_upgrade(self, db):
+        repo = self.env.get_repository()
+        indexer = TagIndexer(self.env, repo)
+
+        if indexer.get_cache_revision() is None:
+            return True
+        else:
+            return False
+
+    def upgrade_environment(self, db):
+        repo = self.env.get_repository()
+        indexer = TagIndexer(self.env, repo)
+
+        # Force an update of the taglist cache
+        indexer.get_taglist()
 
     # INavigationContributor methods
     def get_active_navigation_item(self, req):
