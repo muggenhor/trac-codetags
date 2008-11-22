@@ -23,7 +23,7 @@ class TagIndexer(object):
         c = lambda x, d: split_args(env.config.get('code-tags', x, d))
         self.tags = c('tags', 'XXX, TODO, FIXME')
         self.scan_folders = c('scan_folders', '*')
-        self.exclude_folders = c('exclude_folders', '*')
+        self.exclude_folders = c('exclude_folders', '')
         self.scan_files = c('scan_files', '*')
         
         p = []
