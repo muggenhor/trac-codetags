@@ -35,6 +35,16 @@ class TagIndexer(object):
             os.makedirs(cdir)
         self.cachedir = cdir
 
+    def is_path_valid(self, path):
+        """Determine whether the given path is valid path to scan."""
+        is_valid = False
+        for rule in self.scan_folders:
+            if fnmatch(path, rule):
+                is_valid = True
+                break
+
+        return is_valid
+
     def walk_repo(self, repo):
         """Walks through the whole repository and yields all files
         matching the settings from the config.
@@ -43,11 +53,7 @@ class TagIndexer(object):
             node = repo.get_node(path)
             basename = posixpath.basename(path)
             if node.kind == Node.DIRECTORY:
-                do_scan = False
-                for rule in self.scan_folders:
-                    if fnmatch(node.path, rule):
-                        do_scan = True
-                        break
+                do_scan = self.is_path_valid(node.path)
                 for subnode in node.get_entries():
                     for result in do_walk(subnode.path, do_scan):
                         yield result
@@ -112,11 +118,9 @@ class TagIndexer(object):
                 if kind == Node.DIRECTORY:
                     continue
                 folder = posixpath.dirname(path)
-                for rule in self.scan_folders:
-                    if fnmatch(folder, rule):
-                        break
-                else:
+                if not self.is_path_valid(folder):
                     continue
+
                 for rule in self.scan_files:
                     if not fnmatch(path, rule):
                         break
