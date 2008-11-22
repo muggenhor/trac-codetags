@@ -133,7 +133,14 @@ class TagIndexer(object):
         """Parses the text to load the new tags."""
         files = {}
         for fn in self.get_changed_files():
-            node = self.repo.get_node(fn)
+            try:
+                node = self.repo.get_node(fn)
+            except:
+                # Deal with deleted files by appending an empty file node, to
+                # flush the cache for this file if there's any.
+                files[fn] = [{'path': fn}]
+                continue
+
             f = node.get_content()
             lines = f.read().splitlines()
             if hasattr(f, 'close'):
@@ -147,6 +154,13 @@ class TagIndexer(object):
                         'line':     idx + 1,
                         'text':     m.group(2)
                     })
+
+            # File was returned by get_changed_files, but no tags where found.
+            # Thus return an empty file node instead (to flush cache for this
+            # file if there's any).
+            if not node.path in files:
+                files[node.path] = [{'path': node.path}]
+
         return files
 
     def get_taglist(self):
@@ -156,7 +170,12 @@ class TagIndexer(object):
         new_tags = self.get_new_tags()
         if new_tags:
             for path, matches in new_tags.iteritems():
-                files[path] = matches
+                if len(matches) == 1 and 'tag' not in matches[0]:
+                    # Clean up files without tags in them (in the latest revision that is)
+                    if path in files:
+                        del files[path]
+                else:
+                    files[path] = matches
             self.save_to_cache(files)
         # sort folders and create dict for hdf
         folders = {}
