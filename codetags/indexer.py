@@ -128,10 +128,9 @@ class TagIndexer(object):
                     continue
 
                 for rule in self.scan_files:
-                    if not fnmatch(path, rule):
+                    if fnmatch(path, rule):
+                        changes.add(path)
                         break
-                else:
-                    changes.add(path)
         for n in changes:
             yield n
 
