@@ -42,6 +42,20 @@ class TagIndexer(object):
             if fnmatch(path, rule):
                 return True
 
+    def contains_valid_paths(self, node):
+        if node.kind != Node.DIRECTORY:
+            return True
+
+        # Check whether the given node is a parent directory of the folders to scan
+        for rule in self.scan_folders:
+            subdirs = rule.split('/')
+            for depth in range(0, len(subdirs)):
+                subdir = '/'.join(subdirs[:depth + 1])
+                if fnmatch(node.path, subdir):
+                    return True
+
+        return False
+
     def walk_repo(self, repo):
         """Walks through the whole repository and yields all files
         matching the settings from the config.
@@ -58,8 +72,9 @@ class TagIndexer(object):
 
                 do_scan = self.is_path_valid(node.path)
                 for subnode in node.get_entries():
-                    for result in do_walk(subnode.path, do_scan):
-                        yield result
+                    if self.contains_valid_paths(subnode):
+                        for result in do_walk(subnode.path, do_scan):
+                            yield result
             elif scan:
                 for rule in self.scan_files:
                     if fnmatch(node.path, rule):
