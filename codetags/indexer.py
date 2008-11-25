@@ -38,18 +38,9 @@ class TagIndexer(object):
 
     def is_path_valid(self, path):
         """Determine whether the given path is valid path to scan."""
-        is_valid = False
         for rule in self.scan_folders:
             if fnmatch(path, rule):
-                is_valid = True
-                break
-
-        for rule in self.exclude_folders:
-            if fnmatch(path, rule):
-                is_valid = False
-                break
-
-        return is_valid
+                return True
 
     def walk_repo(self, repo):
         """Walks through the whole repository and yields all files
@@ -59,6 +50,12 @@ class TagIndexer(object):
             node = repo.get_node(path)
             basename = posixpath.basename(path)
             if node.kind == Node.DIRECTORY:
+
+                # Skip directories (and all of their subdirectories) that are excluded
+                for rule in self.exclude_folders:
+                    if fnmatch(node.path, rule):
+                        return
+
                 do_scan = self.is_path_valid(node.path)
                 for subnode in node.get_entries():
                     for result in do_walk(subnode.path, do_scan):
