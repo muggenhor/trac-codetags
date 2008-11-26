@@ -33,7 +33,7 @@ class CodetagsPlugin(Component):
         indexer = TagIndexer(self.env, repo)
 
         # Force an update of the taglist cache
-        indexer.get_taglist()
+        indexer.update_cache()
 
     # INavigationContributor methods
     def get_active_navigation_item(self, req):

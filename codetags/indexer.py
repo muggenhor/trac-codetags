@@ -180,8 +180,8 @@ class TagIndexer(object):
 
         return files
 
-    def get_taglist(self):
-        """Returns a list of active tags and updates cache."""
+    def update_cache(self):
+        """Updates the cache."""
         files = self.load_from_cache()
         # update with new files
         new_tags = self.get_new_tags()
@@ -194,6 +194,12 @@ class TagIndexer(object):
                 else:
                     files[path] = matches
             self.save_to_cache(files)
+
+        return files
+
+    def get_taglist(self):
+        """Returns a list of active tags and updates cache."""
+        files = self.update_cache()
         # sort folders and create dict for hdf
         folders = {}
         items = files.items()
