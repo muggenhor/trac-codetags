@@ -96,7 +96,7 @@ class TagIndexer(object):
         """Saves changes to the cache."""
         # update cache revision
         f = file(os.path.join(self.cachedir, 'revision'), 'wb')
-        pickle.dump(self.repo.get_youngest_rev(), f, 2)
+        pickle.dump(self.repo.get_youngest_rev(), f)
         f.close()
         # cache tree
         f = file(os.path.join(self.cachedir, 'tags'), 'wb')
