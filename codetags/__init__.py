@@ -58,7 +58,6 @@ class CodetagsPlugin(Component):
         repo = self.env.get_repository(req.authname)
         indexer = TagIndexer(self.env, repo)
         folders = indexer.get_taglist()
-        print folders
         
         add_stylesheet(req, 'codetags/style.css')
         req.hdf['folders'] = folders
