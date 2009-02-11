@@ -197,6 +197,8 @@ class TagIndexer(object):
                         del files[path]
                 else:
                     files[path] = matches
+        # Save when things have changed or no previous cache existed
+        if new_tags or files == {}:
             self.save_to_cache(files)
 
         return files
