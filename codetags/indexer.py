@@ -7,7 +7,6 @@ import re
 import posixpath
 import cPickle as pickle
 from fnmatch import fnmatch
-from trac.mimeview import is_binary
 from trac.versioncontrol.api import Node
 try:
     set
@@ -160,12 +159,9 @@ class TagIndexer(object):
                 continue
 
             f = node.get_content()
-            data = f.read()
+            lines = f.read().splitlines()
             if hasattr(f, 'close'):
                 f.close()
-            if is_binary(data):
-                continue
-            lines = data.splitlines()
             for idx, line in enumerate(lines):
                 m = self.tag_re.search(line)
                 if not m is None:
