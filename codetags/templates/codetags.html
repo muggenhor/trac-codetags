@@ -1,0 +1,39 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include href="layout.html" />
+  <head>
+    <title>Code Tags</title>
+  </head>
+
+  <body>
+    <div id="content" class="codetags">
+      <div class="wrapper">
+        <h1>Code Tags</h1>
+        <table class="matches">
+          <tr class="caption">
+            <th class="matchname">Filename</th>
+            <th class="lineno">Line</th>
+            <th class="tag">Tag</th>
+            <th class="text">Description</th>
+          </tr>
+          <py:for each="folder in folders">
+            <tr class="header">
+              <th colspan="4"><a href="${folder['href']}">${folder['path']}</a></th>
+            </tr>
+            <tr py:for="match in folder['matches']"
+              class="${match['class']}">
+              <td class="matchname"><a href="${match['href']}">${match['basename']}</a></td>
+              <td class="lineno">${match['lineno']}</td>
+              <td class="tag">${match['tag']}</td>
+              <td class="text">${match['text']}</td>
+            </tr>
+          </py:for>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

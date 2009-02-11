@@ -8,7 +8,8 @@ from trac.web.chrome import INavigationContributor, ITemplateProvider, \
 from trac.web.main import IRequestHandler
 from trac.util import escape, Markup
 from codetags.indexer import TagIndexer
-
+from trac import __version__ as TracVersion
+from pkg_resources import parse_version
 
 class CodetagsPlugin(Component):
     implements(IEnvironmentSetupParticipant, INavigationContributor, \
@@ -60,8 +61,12 @@ class CodetagsPlugin(Component):
         folders = indexer.get_taglist()
         
         add_stylesheet(req, 'codetags/style.css')
-        req.hdf['folders'] = folders
-        return 'codetags.cs', None
+        if parse_version(TracVersion) < parse_version('0.11'):
+            req.hdf['folders'] = folders
+            return 'codetags.cs', None
+        else:
+            data = {'folders': folders}
+            return 'codetags.html', data, None
 
     # ITemplateProvider methods
     def get_templates_dirs(self):

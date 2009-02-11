@@ -19,7 +19,7 @@ setup(
     keywords='trac plugin',
     packages=['codetags'],
     package_data={
-        'codetags' : ['templates/*.cs', 'htdocs/*.css']
+        'codetags' : ['templates/*.cs', 'templates/*.html', 'htdocs/*.css']
     },
     entry_points = {
         'trac.plugins': ['codetags = codetags']
