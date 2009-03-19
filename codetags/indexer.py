@@ -8,6 +8,8 @@ import posixpath
 import cPickle as pickle
 from fnmatch import fnmatch
 from trac.versioncontrol.api import Node
+from trac.util.text import to_unicode
+
 try:
     set
 except NameError:
@@ -25,6 +27,7 @@ class TagIndexer(object):
         self.scan_folders = c('scan_folders', '*')
         self.exclude_folders = c('exclude_folders', '')
         self.scan_files = c('scan_files', '*')
+        self.enable_unicode = env.config.getbool('code-tags', 'enable_unicode', True)
         
         p = []
         for word in self.tags:
@@ -159,7 +162,10 @@ class TagIndexer(object):
                 continue
 
             f = node.get_content()
-            lines = f.read().splitlines()
+            content = f.read()
+            if (self.enable_unicode):
+                content = to_unicode(content)
+            lines = content.splitlines()
             if hasattr(f, 'close'):
                 f.close()
             for idx, line in enumerate(lines):
