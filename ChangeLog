@@ -1,3 +1,14 @@
+2009-03-29: Version 0.2
+ * General:
+   * Change: Use pickle protocol 0 (ASCII) for storing the cached revision
+   * Fix: Don't print to stdout to prevent problems with mod_wsgi
+   * Fix: "trac-admin upgrade" wouldn't mark the Trac environment as upgraded.
+   * Fix: Don't just assume Python is installed in /usr/bin/, install use /usr/bin/env for locating python
+   * Fix: Allow scanning of Unicode files by scanning them as Unicode if the 'enable_unicode' option is true (set to true by default)
+   * Fix: Don't interpret empty configuration lists as a list with one empty string. This prevents disabling of scanning the repository as a result of a default option for exclude_folders
+ * Renderer:
+   * Change: Use Genshi instead of ClearSilver on Trac 0.11+
+
 2008-11-26: Version 0.1
  * General:
    * Change: Only match whole words: thus match the word's boundaries as well
