@@ -14,7 +14,16 @@ try:
     set
 except NameError:
     from sets import Set as set
-split_args = re.compile(r',\s*').split
+
+_split_args = re.compile(r',\s*').split
+def split_args(s):
+    l = _split_args(s)
+
+    # Make sure that empty strings result in empty lists
+    if len(l) == 1 and l[0] == "":
+        l = []
+
+    return l
 
 
 class TagIndexer(object):
