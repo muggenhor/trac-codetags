@@ -1,0 +1,11 @@
+2008-11-26: Version 0.1
+ * General:
+   * Change: Only match whole words: thus match the word's boundaries as well
+   * Fix: Didn't handle deleted files and files that lost all tags properly
+   (regex '\b')
+   * Change: Add a new option 'exclude_folders' to exclude paths from being searched
+   * Change: Add some package info to the egg's data
+   * Change: Make sure that the initial generation of codetags cache happens in "trac-admin upgrade" (prevents the need for doing this through the webserver, which usually has timeouts in place)
+   * Optimisation: skip all subdirectories and files of excluded folders
+   * Optimisation: skip directories that don't need to be scanned or aren't parents of those that need to be
+   * Fix: don't perform any HTML rendering when upgrading the environment
