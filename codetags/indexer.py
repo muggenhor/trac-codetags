@@ -68,15 +68,14 @@ class TagIndexer(object):
 
         return False
 
-    def walk_repo(self, repo):
+    def walk_repo(self, repo, rev):
         """Walks through the whole repository and yields all files
         matching the settings from the config.
         This method is just used for bootstrapping the cache."""
         def do_walk(path, scan):
-            node = repo.get_node(path)
+            node = repo.get_node(path, rev)
             basename = posixpath.basename(path)
             if node.kind == Node.DIRECTORY:
-
                 # Skip directories (and all of their subdirectories) that are excluded
                 for rule in self.exclude_folders:
                     if fnmatch(node.path, rule):
@@ -132,8 +131,8 @@ class TagIndexer(object):
         cached_rev = self.get_cache_revision()
         # special case: scan all files
         if cached_rev is None:
-            for fn in self.walk_repo(self.repo):
-                yield fn
+            for fn in self.walk_repo(self.repo, cur_rev):
+                yield fn, cur_rev
             return
         # special case: scan no file
         elif not self.repo.rev_older_than(cached_rev, cur_rev):
@@ -156,14 +155,14 @@ class TagIndexer(object):
                         changes.add(path)
                         break
         for n in changes:
-            yield n
+            yield n, cur_rev
 
     def get_new_tags(self):
         """Parses the text to load the new tags."""
         files = {}
-        for fn in self.get_changed_files():
+        for fn, rev in self.get_changed_files():
             try:
-                node = self.repo.get_node(fn)
+                node = self.repo.get_node(fn, rev)
             except:
                 # Deal with deleted files by appending an empty file node, to
                 # flush the cache for this file if there's any.
