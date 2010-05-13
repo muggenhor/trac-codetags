@@ -7,7 +7,7 @@ import re
 import posixpath
 import cPickle as pickle
 from fnmatch import fnmatch
-from trac.versioncontrol.api import Node
+from trac.versioncontrol.api import Changeset, Node
 from trac.util.text import to_unicode
 
 try:
@@ -157,7 +157,8 @@ class TagIndexer(object):
                 folder = posixpath.dirname(path)
                 if not self.is_path_valid(folder):
                     continue
-
+                if change == Changeset.MOVE:
+                    changes.add(base_path)
                 for rule in self.scan_files:
                     if fnmatch(path, rule):
                         changes.add(path)
