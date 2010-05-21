@@ -103,11 +103,19 @@ class TagIndexer(object):
         f.close()
         return result
 
+    def get_youngest_rev(self):
+        """Work around a bug in Trac's CachedRepository class which causes
+        Subversion revision 0 to be converted into None."""
+        rev = self.repo.get_youngest_rev()
+        if rev is None and hasattr(self.repo, 'repos'):
+            rev = self.repo.repos.get_youngest_rev()
+        return rev
+
     def save_to_cache(self, folders):
         """Saves changes to the cache."""
         # update cache revision
         f = file(os.path.join(self.cachedir, 'revision'), 'wb')
-        pickle.dump(self.repo.get_youngest_rev(), f)
+        pickle.dump(self.get_youngest_rev(), f)
         f.close()
         # cache tree
         f = file(os.path.join(self.cachedir, 'tags'), 'wb')
@@ -127,7 +135,7 @@ class TagIndexer(object):
     def get_changed_files(self):
         """Returns the files which require a rescan from the
         last cached revision to the current one."""
-        cur_rev = self.repo.get_youngest_rev()
+        cur_rev = self.get_youngest_rev()
         cached_rev = self.get_cache_revision()
         # special case: scan all files
         if cached_rev is None:
