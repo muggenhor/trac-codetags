@@ -1,8 +1,18 @@
 #!/usr/bin/env python
 from setuptools import setup
+import os
 
 PACKAGE = 'codetags'
 VERSION = '0.2'
+
+if os.path.exists('.git/HEAD'):
+    tag_hash = os.popen('git log --pretty=format:%%H %s^..%s' % (VERSION, VERSION)).read()
+    head_hash = os.popen('git log --pretty=format:%H HEAD^..HEAD').read()
+    if tag_hash != head_hash:
+        import datetime
+        date = os.popen('git log --pretty=format:%ct HEAD^..HEAD').read()
+        date = datetime.datetime.utcfromtimestamp(long(date))
+        VERSION += date.strftime('-%Y%m%d%H%M%S')
 
 setup(
     name=PACKAGE,
