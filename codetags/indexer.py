@@ -88,11 +88,12 @@ class TagIndexer(object):
                         for result in do_walk(subnode.path, do_scan):
                             yield result
             elif scan:
+                fname = posixpath.basename(node.path)
                 for rule in self.exclude_files:
-                    if fnmatch(node.path, rule):
+                    if fnmatch(fname, rule):
                         return
                 for rule in self.scan_files:
-                    if fnmatch(node.path, rule):
+                    if fnmatch(fname, rule):
                         yield node.path
                         return
         return do_walk('/', True)
@@ -163,12 +164,13 @@ class TagIndexer(object):
                     continue
                 if change == Changeset.MOVE:
                     changes.add(base_path)
+                fname = posixpath.basename(path)
                 for rule in self.exclude_files:
-                    if fnmatch(path, rule):
+                    if fnmatch(fname, rule):
                         break
                 else:
                     for rule in self.scan_files:
-                        if fnmatch(path, rule):
+                        if fnmatch(fname, rule):
                             changes.add(path)
                             break
         for n in changes:
