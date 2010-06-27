@@ -36,6 +36,7 @@ class TagIndexer(object):
         self.scan_folders = c('scan_folders', '*')
         self.exclude_folders = c('exclude_folders', '')
         self.scan_files = c('scan_files', '*')
+        self.exclude_files = c('exclude_files', '')
         self.enable_unicode = env.config.getbool('code-tags', 'enable_unicode', True)
         
         p = []
@@ -87,6 +88,9 @@ class TagIndexer(object):
                         for result in do_walk(subnode.path, do_scan):
                             yield result
             elif scan:
+                for rule in self.exclude_files:
+                    if fnmatch(node.path, rule):
+                        return
                 for rule in self.scan_files:
                     if fnmatch(node.path, rule):
                         yield node.path
@@ -159,10 +163,14 @@ class TagIndexer(object):
                     continue
                 if change == Changeset.MOVE:
                     changes.add(base_path)
-                for rule in self.scan_files:
+                for rule in self.exclude_files:
                     if fnmatch(path, rule):
-                        changes.add(path)
                         break
+                else:
+                    for rule in self.scan_files:
+                        if fnmatch(path, rule):
+                            changes.add(path)
+                            break
         for n in changes:
             yield n, cur_rev
 
