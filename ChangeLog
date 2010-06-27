@@ -1,3 +1,12 @@
+2010-06-27: Version 0.3
+ * General:
+   * Fix: Explicitly fetch files from the most recent revision
+   * Fix: infinitely required env upgrade at rev 0
+   * Fix: Handle moved files correctly, don't allow their tags to linger
+   * Change: Add a new option 'exclude_files' to blacklist files and prevent them from being searched
+ * License:
+   * Fix: Remove the reference to <ORGANIZATION> from the copyright license
+
 2009-03-29: Version 0.2
  * General:
    * Change: Use pickle protocol 0 (ASCII) for storing the cached revision

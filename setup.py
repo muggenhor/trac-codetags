@@ -3,7 +3,7 @@ from setuptools import setup
 import os
 
 PACKAGE = 'codetags'
-VERSION = '0.2'
+VERSION = '0.3'
 
 if os.path.exists('.git/HEAD'):
     tag_hash = os.popen('git log --pretty=format:%%H %s^..%s' % (VERSION, VERSION)).read()
