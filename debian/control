@@ -1,0 +1,14 @@
+Source: trac-codetags
+Section: python
+Priority: optional
+Maintainer: Giel van Schijndel <me@mortis.eu>
+Build-Depends: debhelper (>= 5), cdbs (>= 0.4.43), python, python-support (>= 0.4), python-setuptools
+Standards-Version: 3.8.4
+Homepage: http://trac-hacks.org/wiki/CodeTagsPlugin
+
+Package: trac-codetags
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-pkg-resources, trac (>= 0.11)
+Description: A plugin for displaying code tags
+ Extends Trac to scan the source for certain preconfigured tags (e.g. XXX,
+ FIXME, TODO, etc.) and provides an overview of these tags.
