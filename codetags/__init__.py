@@ -46,7 +46,7 @@ class CodetagsPlugin(Component):
         yield 'mainnav', 'codetags', Markup('<a href="%s">Code Tags</a>' \
                                     % escape(self.env.href.codetags()))
 
-    # IPermissionHandler methods
+    # IPermissionRequestor methods
     def get_permission_actions(self):
         return ['CODETAGS_VIEW']
 

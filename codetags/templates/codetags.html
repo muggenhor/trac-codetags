@@ -14,12 +14,14 @@
       <div class="wrapper">
         <h1>Code Tags</h1>
         <table class="matches">
-          <tr class="caption">
-            <th class="matchname">Filename</th>
-            <th class="lineno">Line</th>
-            <th class="tag">Tag</th>
-            <th class="text">Description</th>
-          </tr>
+          <thead>
+            <tr class="caption">
+              <th class="matchname">Filename</th>
+              <th class="lineno">Line</th>
+              <th class="tag">Tag</th>
+              <th class="text">Description</th>
+            </tr>
+          </thead>
           <py:for each="folder in folders">
             <tr class="header">
               <th colspan="4"><a href="${folder['href']}">${folder['path']}</a></th>
