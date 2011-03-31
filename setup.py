@@ -17,6 +17,7 @@ if os.path.exists('.git/HEAD'):
 setup(
     name=PACKAGE,
     version=VERSION,
+    install_requires='Trac >= 0.10',
     author='Giel van Schijndel',
     author_email='me@mortis.eu',
     url='http://trac-hacks.org/wiki/CodeTagsPlugin',
