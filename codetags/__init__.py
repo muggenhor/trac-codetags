@@ -56,7 +56,7 @@ class CodetagsPlugin(Component):
     
     def process_request(self, req):
         req.perm.assert_permission('CODETAGS_VIEW')
-        repo = self.env.get_repository(req.authname)
+        repo = self.env.get_repository(authname=req.authname)
         indexer = TagIndexer(self.env, repo)
         folders = indexer.get_taglist()
         
