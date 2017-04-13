@@ -1,6 +1,8 @@
+/*.idea
 /build
-/codetags.egg-info
+/*.egg-info
 /debian/files
 /debian/python-module-stampdir
 /debian/trac-codetags*
 /dist
+*.pyc
